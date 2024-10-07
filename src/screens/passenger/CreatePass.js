@@ -70,6 +70,12 @@ export default function CreatePass() {
     if (valid) {
       dispatch(createOrder({ passData }));
       setVisible(true);
+      dispatch(setLocation1(""));
+      dispatch(setLocation2(""));
+      dispatch(setComment(""));
+      dispatch(setCount(1));
+      dispatch(setPrice(""));
+      setDisplayPrice("");
     }
   };
 

@@ -20,6 +20,7 @@ import {
 } from "../../../redux/driver/passList";
 import debounce from "lodash.debounce";
 import filter from "lodash.filter";
+import { format } from "date-fns";
 
 export default function PassList() {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ export default function PassList() {
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength
+    return text?.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
@@ -93,6 +94,30 @@ export default function PassList() {
   }
   const handleItemPress = (item) => {
     dispatch(openModal(item));
+  };
+
+  {
+    /* PRICE FORMAT */
+  }
+  const formatPrice = (pr) => {
+    pr = String(pr);
+    const cleaned = pr.replace(/\s+/g, "");
+    if (cleaned.length === 5) {
+      return `${cleaned.slice(0, 2)} ${cleaned.slice(2)}`;
+    } else if (cleaned.length === 4) {
+      return `${cleaned.slice(0, 1)} ${cleaned.slice(1)}`;
+    } else if (cleaned.length === 6) {
+      return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
+    } else {
+      return cleaned;
+    }
+  };
+
+  {
+    /* DATE FORMAT */
+  }
+  const formattedDate = (dt) => {
+    return format(new Date(dt), "dd.MM.yyyy");
   };
 
   return (
@@ -164,9 +189,11 @@ export default function PassList() {
                         source={require("../../../assets/account.png")}
                         style={{ width: 16, height: 16, marginRight: 8 }}
                       />
-                      <Text style={styles.price}>{item.price}₸</Text>
+                      <Text style={styles.price}>
+                        {formatPrice(item.price)} ₸
+                      </Text>
                     </View>
-                    <Text style={styles.date}>{item.date}</Text>
+                    <Text style={styles.date}>{formattedDate(item.date)}</Text>
                   </View>
                   <Text
                     style={{ marginBottom: 6, fontSize: 12, color: "#5F5BDB" }}
@@ -231,7 +258,7 @@ export default function PassList() {
                 fontSize: 16,
               }}
             >
-              {selectedItem.price}₸
+              {formatPrice(selectedItem.price)} ₸
             </Text>
             <Text
               style={{
@@ -241,7 +268,7 @@ export default function PassList() {
                 fontWeight: 500,
               }}
             >
-              {selectedItem.date}
+              {formattedDate(selectedItem.date)}
             </Text>
             <Text
               style={{

@@ -6,7 +6,7 @@ export const createOrder = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const { driverData } = payload;
-      const res = await axios.post("/createdriver", [driverData]);
+      const res = await axios.post("/createdriver", driverData);
       if (res.status !== 201) {
         throw new Error("Сұраныста қателік бар!");
       }
@@ -67,8 +67,6 @@ export const createDriver = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
-        // Assuming you want to store the created order data in the state
-        // Modify as per your requirement
         state.order = action.payload;
       })
       .addCase(createOrder.rejected, (state, action) => {

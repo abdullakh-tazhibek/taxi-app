@@ -3,7 +3,7 @@ import DriverList from "./passenger/DriverList";
 import PassList from "./driver/PassList";
 
 export default function SecondBlock() {
-  const role = "жолаушы";
+  const role = "жүргізуші";
 
   return (
     <View style={styles.container}>

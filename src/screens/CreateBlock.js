@@ -4,7 +4,7 @@ import CreatePass from "./passenger/CreatePass";
 import CreateDriver from "./driver/CreateDriver";
 
 export default function CreateBlock({ navigation }) {
-  const role = "жолаушы";
+  const role = "жүргізуші";
 
   return (
     <View style={styles.container}>

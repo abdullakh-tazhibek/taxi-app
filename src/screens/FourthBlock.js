@@ -3,7 +3,7 @@ import DeliveryPass from "./passenger/DeliveryPass";
 import DeliveryDriver from "./driver/DeliveryDriver";
 
 export default function FourthBlock() {
-  const role = "жолаушы";
+  const role = "жүргізуші";
 
   return (
     <View style={{ flex: 1 }}>

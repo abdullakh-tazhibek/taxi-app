@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 
-const role = "жолаушы";
+const role = "жүргізуші";
 
 export default function Home({ navigation }) {
   return (

@@ -19,6 +19,7 @@ import {
 } from "../../../redux/driver/deliveryDriver";
 import debounce from "lodash.debounce";
 import filter from "lodash.filter";
+import { format } from "date-fns";
 
 export default function DeliveryDriver() {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ export default function DeliveryDriver() {
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength
+    return text?.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
@@ -109,6 +110,13 @@ export default function DeliveryDriver() {
     } else {
       return cleaned;
     }
+  };
+
+  {
+    /* DATE FORMAT */
+  }
+  const formattedDate = (dt) => {
+    return format(new Date(dt), "dd.MM.yyyy");
   };
 
   return (
@@ -171,7 +179,7 @@ export default function DeliveryDriver() {
                     <Text style={styles.price}>
                       {formatPrice(item.price)} ₸
                     </Text>
-                    <Text style={styles.date}>{item.date}</Text>
+                    <Text style={styles.date}>{formattedDate(item.date)}</Text>
                   </View>
                   <Text style={{ fontSize: 12, color: "#B7B7B7" }}>
                     {truncateText(item.comment, 40)}
@@ -241,7 +249,7 @@ export default function DeliveryDriver() {
                 fontWeight: 500,
               }}
             >
-              {selectedItem.date}
+              {formattedDate(selectedItem.date)}
             </Text>
             <Text style={{ fontSize: 16, color: "#B7B7B7", marginTop: 12 }}>
               {selectedItem.comment}

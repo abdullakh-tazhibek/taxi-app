@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../src/api/base";
 
 export const createOrder = createAsyncThunk(
-  "createpass/createOrder",
+  "createPass/createOrder",
   async (payload, { rejectWithValue }) => {
     try {
       const { passData } = payload;
-      const res = await axios.post("/createpass", [passData]);
+      const res = await axios.post("/createpass", passData);
       if (res.status !== 201) {
         throw new Error("Сұраныста қателік бар!");
       }

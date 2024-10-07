@@ -42,7 +42,7 @@ export default function DeliveryPass() {
   {
     /* FIND CAR */
   }
-  const handleSubmit = () => {
+  const handleSubmit = (deliveryData) => {
     let valid = true;
     if (!location1 && !location2) {
       setErrorLocation("Жер-су аттарын жазған жоқсыз!");
@@ -59,12 +59,13 @@ export default function DeliveryPass() {
     }
 
     if (valid) {
-      dispatch(
-        createOrder({
-          deliveryData: [{ location1, location2, date, comment, price }],
-        })
-      );
+      dispatch(createOrder({ deliveryData }));
       setVisible(true);
+      dispatch(setLocation1(""));
+      dispatch(setLocation2(""));
+      dispatch(setComment(""));
+      dispatch(setPrice(""));
+      setDisplayPrice("");
     }
   };
 
@@ -286,7 +287,7 @@ export default function DeliveryPass() {
           {/* ---------- Popover module ---------- */}
           <Modal
             visible={visible}
-            backdropStyle={styles.backdrop}
+            backdropStyle={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
             onBackdropPress={() => setVisible(false)}
           >
             <Card disabled={true}>
@@ -310,7 +311,15 @@ export default function DeliveryPass() {
           {/* ---------- Knopka ---------- */}
           <Button
             mode="contained"
-            onPress={handleSubmit}
+            onPress={() =>
+              handleSubmit({
+                location1,
+                location2,
+                date,
+                comment,
+                price,
+              })
+            }
             style={styles.submitButton}
             labelStyle={styles.submitButtonText}
           >

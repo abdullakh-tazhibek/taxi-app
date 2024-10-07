@@ -7,11 +7,41 @@ import CreateBlock from "./screens/CreateBlock";
 import FourthBlock from "./screens/FourthBlock";
 import Profile from "./screens/Profile";
 import MyOrders from "./screens/MyOrders";
+import Login from "./screens/Login";
+import Registration from "./screens/Registration";
+import Roles from "./screens/Roles";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function Main() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Roles"
+        component={Roles}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="HomeTabs"
+        component={HomeTabs}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function HomeTabs() {
   return (
     <Tab.Navigator
       screenOptions={{

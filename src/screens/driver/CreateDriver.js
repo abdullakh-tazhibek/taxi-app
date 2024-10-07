@@ -65,6 +65,12 @@ export default function CreateDriver() {
     if (valid) {
       dispatch(createOrder({ driverData }));
       setVisible(true);
+      dispatch(setLocation1(""));
+      dispatch(setLocation2(""));
+      dispatch(setComment(""));
+      dispatch(setCount(1));
+      dispatch(setPrice(""));
+      setDisplayPrice("");
     }
   };
 

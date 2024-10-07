@@ -81,7 +81,7 @@ export default function DriverList() {
   };
 
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength
+    return text?.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
@@ -283,7 +283,7 @@ export default function DriverList() {
                 marginTop: 12,
               }}
             >
-              {selectedItem.count}
+              Орын саны: {selectedItem.count}
             </Text>
             <Text style={{ fontSize: 16, color: "#B7B7B7", marginTop: 12 }}>
               {truncateText(selectedItem.comment)}

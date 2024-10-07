@@ -10,7 +10,7 @@ import {
 import { Divider, Button } from "react-native-paper";
 
 const name = "Болат";
-const role = "жолаушы";
+const role = "жүргізуші";
 const phone = "+7(777)-777-77-77";
 const paid = true;
 const expDate = "02.08.2024";
