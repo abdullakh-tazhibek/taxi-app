@@ -18,6 +18,7 @@ import { places } from "../../../places/places";
 
 export default function DeliveryPass() {
   const dispatch = useDispatch();
+  const option = "жеткізу";
   const {
     date,
     comment,
@@ -318,6 +319,7 @@ export default function DeliveryPass() {
                 date,
                 comment,
                 price,
+                option,
               })
             }
             style={styles.submitButton}

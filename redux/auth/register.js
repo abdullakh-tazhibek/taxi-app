@@ -1,19 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../src/api/base";
+import api from "../../src/api/base";
+import { setTokens } from "./tokenSlice";
+import * as SecureStore from "expo-secure-store";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (userData, { rejectWithValue }) => {
+  async (userData, { dispatch, rejectWithValue }) => {
     try {
-      const res = await axios.post("/user/register", userData);
+      const response = await api.post("/user/register", userData);
+      const { token, refreshToken } = response.data;
 
-      if (res.status !== 201) {
-        throw new Error(res.data.message || "Сұраныста қателік бар!");
+      // Save tokens securely
+      if (typeof window !== "undefined") {
+        // For web environment (using localStorage)
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refreshToken);
+      } else {
+        // For React Native (using SecureStore)
+        await SecureStore.setItemAsync("token", token);
+        await SecureStore.setItemAsync("refreshToken", refreshToken);
       }
 
-      return res.data;
+      // Update token state
+      dispatch(setTokens({ token, refreshToken }));
+
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      console.error("Registration failed:", error);
+      return rejectWithValue(error.response.data || error.message);
     }
   }
 );
@@ -35,6 +49,7 @@ export const register = createSlice({
   initialState,
   reducers: {
     setRole(state, action) {
+      console.log("debug render set role: ", action.payload);
       state.role = action.payload;
     },
     setCountry(state, action) {
@@ -64,10 +79,12 @@ export const register = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoaded = true;
-        state.successMessage = action.payload.message;
+        state.successMessage =
+          action.payload.message || "Registration successful!";
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.isLoaded = true;
+        console.error("Registration error:", action.payload);
       });
   },
 });

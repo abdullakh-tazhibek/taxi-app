@@ -1,17 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../src/api/base";
+import api from "../../src/api/base";
+import { setTokens } from "./tokenSlice";
+import * as SecureStore from "expo-secure-store";
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (_, { rejectWithValue }) => {
+  async (credentials, { dispatch, rejectWithValue }) => {
     try {
-      const res = await axios.get("/user/register");
-      if (res.status !== 200) {
-        throw new Error("Сұраныста қателік бар!");
+      const response = await api.post("/user/login", credentials);
+      const { token, refreshToken } = response.data;
+
+      // Save tokens securely
+      if (typeof window !== "undefined") {
+        // For web environment (using localStorage)
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refreshToken);
+      } else {
+        // For React Native (using SecureStore)
+        await SecureStore.setItemAsync("token", token);
+        await SecureStore.setItemAsync("refreshToken", refreshToken);
       }
-      return res.data;
+
+      // Update token state
+      dispatch(setTokens({ token, refreshToken }));
+
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error("Login failed:", error);
+      return rejectWithValue(error.response.data || error.message);
     }
   }
 );
@@ -20,6 +36,8 @@ const initialState = {
   country: "KZ",
   phone: "",
   password: "",
+  isLoaded: false,
+  errorMessage: "",
 };
 
 export const login = createSlice({
@@ -40,12 +58,15 @@ export const login = createSlice({
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoaded = false;
+        state.errorMessage = "";
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state) => {
         state.isLoaded = true;
+        state.errorMessage = "";
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.isLoaded = false;
+        state.errorMessage = action.payload || "Login failed.";
       });
   },
 });

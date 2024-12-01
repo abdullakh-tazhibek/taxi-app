@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   TextInput,
@@ -18,10 +18,12 @@ import {
 } from "../../redux/auth/login";
 import { TextInputMask } from "react-native-masked-text";
 import { Card, Modal } from "@ui-kitten/components";
+import { setTokens } from "../../redux/auth/tokenSlice";
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const { country, phone, password } = useSelector((state) => state.login);
+  const { token } = useSelector((state) => state.tokenSlice);
 
   const [showMenu, setShowMenu] = React.useState(false);
   const [eye, setEye] = React.useState("");
@@ -37,12 +39,43 @@ export default function Login({ navigation }) {
   }
   const [visible, setVisible] = React.useState(false);
 
+  const initializeAuth = async () => {
+    try {
+      let token;
+      // Web environment
+      token = localStorage.getItem("token");
+      if (typeof window !== "undefined") {
+      } else {
+        // React Native environment
+        token = await SecureStore.getItemAsync("token");
+      }
+      if (token) {
+        dispatch(setTokens(token));
+        navigation.navigate("HomeTabs");
+      }
+    } catch (error) {
+      console.error("Error initializing auth:", error);
+    }
+  };
+
+  useEffect(() => {
+    initializeAuth();
+  }, [dispatch, navigation]);
+
   const onPassCheck = (password) => {
     setErrPass("");
     dispatch(setPassword(password));
   };
 
+  const onPressOK = () => {
+    dispatch(setPassword(""));
+    dispatch(setPhone(""));
+    setVisible(false);
+  };
+
   const handleLogin = async ({ phone, password }) => {
+    // navigation.navigate("HomeTabs");
+
     let valid = true;
 
     if (!phone) {
@@ -57,7 +90,8 @@ export default function Login({ navigation }) {
 
     if (valid) {
       try {
-        await dispatch(loginUser({ country, phone, password })).unwrap();
+        await dispatch(loginUser({ phone, password })).unwrap();
+        console.log("debug token ", token);
         navigation.navigate("HomeTabs");
       } catch (error) {
         setVisible(true);
@@ -326,10 +360,10 @@ export default function Login({ navigation }) {
           </Pressable>
 
           {/* ---------- Popover module ---------- */}
-          <Modal
+          {/* <Modal
             visible={visible}
             backdropStyle={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-            onBackdropPress={() => setVisible(false)}
+            onBackdropPress={onPressOK}
           >
             <Card disabled={true}>
               <Text
@@ -341,9 +375,9 @@ export default function Login({ navigation }) {
               >
                 Қолданушы жүйеде тіркелмеген!
               </Text>
-              <Button onPress={() => setVisible(false)}>Жақсы</Button>
+              <Button onPress={onPressOK}>Жақсы</Button>
             </Card>
-          </Modal>
+          </Modal> */}
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

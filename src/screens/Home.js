@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 
-const role = "жүргізуші";
+const role = "driver";
 
 export default function Home({ navigation }) {
   return (
@@ -21,7 +21,7 @@ export default function Home({ navigation }) {
         />
 
         {/* ---------------JOLAUSHY--------------- */}
-        {role === "жолаушы" ? (
+        {role === "passenger" ? (
           <>
             <View
               style={{ display: "flex", flexDirection: "row", marginTop: 30 }}
@@ -50,7 +50,7 @@ export default function Home({ navigation }) {
         ) : null}
 
         {/* ---------------JURGIZUSHI--------------- */}
-        {role === "жүргізуші" ? (
+        {role === "driver" ? (
           <>
             <View
               style={{ display: "flex", flexDirection: "row", marginTop: 30 }}
@@ -85,7 +85,7 @@ export default function Home({ navigation }) {
           />
         </Pressable>
 
-        {role === "жолаушы" ? (
+        {role === "driver" ? (
           <Text
             style={{
               marginBottom: 30,

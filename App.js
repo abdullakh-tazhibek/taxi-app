@@ -7,15 +7,35 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
+import * as SecureStore from "expo-secure-store";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  {
-    /* if isAuthenticated is true, the user will be navigated to 
-    the HomeTabs directly, otherwise, they will see the Login or 
-    Registration screens. */
-  }
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        let token;
+        if (typeof window !== "undefined") {
+          // Web environment
+          token = localStorage.getItem("token");
+        } else {
+          // React Native environment
+          token = await SecureStore.getItemAsync("token");
+        }
+        if (token) {
+          setIsAuthenticated(true); // User is authenticated
+        } else {
+          setIsAuthenticated(false); // User is not authenticated
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
   useEffect(() => {
     // Add logic to check if the user is authenticated
     // setIsAuthenticated(true or false);

@@ -26,6 +26,7 @@ import { places } from "../../../places/places";
 
 export default function CreatePass() {
   const dispatch = useDispatch();
+  const option = "такси";
   const {
     date,
     count,
@@ -389,6 +390,7 @@ export default function CreatePass() {
                 date,
                 comment,
                 price,
+                option,
               })
             }
             style={styles.submitButton}

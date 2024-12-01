@@ -8,6 +8,8 @@ import {
   Text,
 } from "react-native";
 import { Divider, Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/tokenSlice";
 
 const name = "Болат";
 const role = "жүргізуші";
@@ -16,6 +18,12 @@ const paid = true;
 const expDate = "02.08.2024";
 
 export default function Profile() {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -68,7 +76,7 @@ export default function Profile() {
           </Text>
         ) : null}
 
-        {role === "жүргізуші" && paid === false ? (
+        {role === "driver" && paid === false ? (
           <Button
             style={{
               marginTop: 30,
@@ -90,7 +98,7 @@ export default function Profile() {
           onPress={() => {}}
         >
           <Text style={{ fontSize: 16 }}>
-            {role === "жолаушы" ? "Жүргізуші болу" : "Жолаушы болу"}
+            {role === "passenger" ? "Жүргізуші болу" : "Жолаушы болу"}
           </Text>
         </Button>
 
@@ -128,7 +136,7 @@ export default function Profile() {
         {/* -------------- LOGOUT --------------*/}
         <Button
           mode="outlined"
-          onPress={() => {}}
+          onPress={handleLogout}
           style={styles.submitButton}
           labelStyle={styles.submitButtonText}
         >

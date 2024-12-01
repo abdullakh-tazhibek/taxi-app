@@ -1,13 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
+import { count } from "../../redux/passenger/createPass";
 
 const date = "08.03.2022";
 const price = 30000;
 const location1 = "Павлодар қ., Қазақстан";
-const location2 = "Баян-Өлгий қ., Моңғолия";
+const location2 = "Ресей";
 const comment = "5 орын, машина Альфард";
 
 export default function MyOrders() {
+  const role = "passenger";
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -30,6 +33,10 @@ export default function MyOrders() {
             <Text style={styles.price}>{price}₸</Text>
             <Text style={styles.date}>{date}</Text>
           </View>
+
+          {role === "passenger" ? (
+            <Text style={styles.date}> {count ? "такси" : "жеткізу"} </Text>
+          ) : null}
 
           <Text style={{ fontSize: 16, color: "#B7B7B7" }}>{comment}</Text>
 

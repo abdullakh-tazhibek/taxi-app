@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import login from "./auth/login";
 import register from "./auth/register";
+import tokenSlice from "./auth/tokenSlice";
 
 import driverList from "./passenger/driverList";
 import createPass from "./passenger/createPass";
@@ -17,6 +18,7 @@ export const store = configureStore({
   reducer: {
     login,
     register,
+    tokenSlice,
 
     driverList,
     createPass,

@@ -24,11 +24,13 @@ import { Card, Modal } from "@ui-kitten/components";
 
 export default function Register({ navigation }) {
   const dispatch = useDispatch();
-  const { role, country, name, phone, email, password, cpass, successMessage } =
-    useSelector((state) => state.register);
+  const { role, country, name, phone, email, password, cpass } = useSelector(
+    (state) => state.register
+  );
 
   const [showMenu, setShowMenu] = React.useState(false);
-  const [eye, setEye] = React.useState("");
+  const [eyePass, setEyePass] = React.useState("");
+  const [eyeCpass, setEyeCpass] = React.useState("");
 
   {
     /* Error states */
@@ -361,30 +363,31 @@ export default function Register({ navigation }) {
               display: "flex",
               flexDirection: "row",
               borderRadius: 8,
-              marginBottom: "20px",
-              height: "40px",
+              marginBottom: 20,
+              height: 40,
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
             <TextInput
-              secureTextEntry={!eye}
+              secureTextEntry={!eyePass}
               placeholder="Құпиясөз"
               placeholderTextColor={"#B7B7B7"}
-              style={{ fontSize: 16, marginLeft: "10px" }}
+              style={{ fontSize: 16, marginLeft: 10 }}
               onChangeText={onPassCheck}
             />
-            <View onClick={() => setEye((prev) => !prev)}>
+            <Pressable onPress={() => setEyePass((prev) => !prev)}>
               <Image
                 source={
-                  eye
+                  eyePass
                     ? require("../../assets/eye_on.png")
                     : require("../../assets/eye_off.png")
                 }
-                style={{ width: "24px", height: "24px", marginRight: "10px" }}
+                style={{ width: 24, height: 24, marginRight: 10 }}
               />
-            </View>
+            </Pressable>
           </View>
+
           {/* ---------- password error ---------- */}
           <Text style={styles.error}>{errPass}</Text>
 
@@ -402,7 +405,7 @@ export default function Register({ navigation }) {
             }}
           >
             <TextInput
-              secureTextEntry={!eye}
+              secureTextEntry={!eyeCpass}
               placeholder="Құпиясөзді қайталаңыз"
               placeholderTextColor={"#B7B7B7"}
               style={{ fontSize: 16, marginLeft: "10px" }}
@@ -413,10 +416,10 @@ export default function Register({ navigation }) {
                 }
               }}
             />
-            <View onClick={() => setEye((prev) => !prev)}>
+            <View onClick={() => setEyeCpass((prev) => !prev)}>
               <Image
                 source={
-                  eye
+                  eyeCpass
                     ? require("../../assets/eye_on.png")
                     : require("../../assets/eye_off.png")
                 }

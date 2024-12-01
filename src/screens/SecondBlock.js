@@ -3,12 +3,12 @@ import DriverList from "./passenger/DriverList";
 import PassList from "./driver/PassList";
 
 export default function SecondBlock() {
-  const role = "жүргізуші";
+  const role = "driver";
 
   return (
     <View style={styles.container}>
-      {role === "жолаушы" ? <DriverList /> : null}
-      {role === "жүргізуші" ? <PassList /> : null}
+      {role === "passenger" ? <DriverList /> : null}
+      {role === "driver" ? <PassList /> : null}
     </View>
   );
 }

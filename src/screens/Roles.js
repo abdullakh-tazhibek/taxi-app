@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { View, ScrollView, Image, Pressable } from "react-native";
 import { Text, Appbar } from "react-native-paper";
 import { setRole } from "../../redux/auth/register";
@@ -8,11 +8,18 @@ export default function Roles({ navigation }) {
   const dispatch = useDispatch();
 
   const pickRole = (rl) => {
-    if (rl === "жолаушы") {
-      dispatch(setRole("жолаушы"));
-    } else if (rl === "жүргізуші") {
-      dispatch(setRole("жүргізуші"));
+    console.log("debug pick role ", rl);
+    {
+      /*
+      if (rl === "passenger") {
+      dispatch(setRole("passenger"));
+    } else if (rl === "driver") {
+      dispatch(setRole("driver"));
     }
+      */
+    }
+
+    dispatch(setRole(rl));
     navigation.navigate("Registration");
   };
 
@@ -53,13 +60,13 @@ export default function Roles({ navigation }) {
             marginBottom: "30px",
           }}
         >
-          <Pressable onPress={() => pickRole("жолаушы")}>
+          <Pressable onPress={() => pickRole("passenger")}>
             <Image
               source={require("../../assets/passengerCard.png")}
               style={{ height: "160px", width: "140px" }}
             />
           </Pressable>
-          <Pressable onPress={() => pickRole("жүргізуші")}>
+          <Pressable onPress={() => pickRole("driver")}>
             <Image
               source={require("../../assets/driverCard.png")}
               style={{ height: "160px", width: "140px" }}
